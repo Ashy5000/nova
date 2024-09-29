@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Merriweather } from "next/font/google";
 import "./globals.css";
+import "./app/tabs.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

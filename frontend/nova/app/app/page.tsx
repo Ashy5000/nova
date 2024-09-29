@@ -3,9 +3,29 @@
 import "./tabs.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
+import { ethers } from "ethers";
 
 export default function App() {
   const [walletReady, setWalletReady] = useState(false);
+  const [signer, setSigner] = useState(null);
+  const [provider, setProvider] = useState(null);
+
+  async function connectWallet() {
+    if (walletReady) {
+      return;
+    }
+    if (window.ethereum == null) {
+      alert(
+        "For the moment, Nova only supports the Metamask browser wallet, and it looks like it's not installed.",
+      );
+      return;
+    }
+    let providerTmp = new ethers.BrowserProvider(window.ethereum);
+    setProvider(providerTmp);
+    setSigner(await providerTmp.getSigner());
+    setWalletReady(true);
+  }
+
   return (
     <div class="dark:invert backdrop-brightness-90 rounded-sm p-5 m-12">
       <span className="flex items-center">
@@ -14,7 +34,10 @@ export default function App() {
       </span>
       <br />
       <br />
-      <button class="dark:invert backdrop-brightness-90 rounded p-1 my-1 bg-black w-48 hover:bg-inherit">
+      <button
+        class="dark:invert backdrop-brightness-90 rounded p-1 my-1 bg-black w-48 hover:bg-inherit"
+        onClick={connectWallet}
+      >
         Connect
       </button>
       <br />

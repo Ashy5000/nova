@@ -2,6 +2,7 @@
 
 import "./tabs.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import UNOVAManager from "./unova_manager";
 import { useState } from "react";
 import { ethers } from "ethers";
 
@@ -50,6 +51,7 @@ export default function App() {
           </TabList>
           <TabPanel>
             <mark class="dark:invert bg-foreground">Manage your uNOVA.</mark>
+            <UNOVAManager />
           </TabPanel>
           <TabPanel>
             <mark class="dark:invert bg-foreground">Manage your stkNOVA.</mark>

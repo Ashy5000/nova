@@ -58,13 +58,13 @@ export default function Home() {
           <mark class="dark:invert bg-foreground">
             <b>Notes: About NOVA</b>
             <br />
-            DAI has long been the decentralized stablecoin of choice for DeFi if
-            you believe that lower liquidity is acceptable, DAI is still users.
-            But coming soon are the risks associated with lower liquidity on the
-            DAI stablecoin due to its centralized replacement, USDS. Also, it's
-            mostly backed by USDC, a centralized stablecoin. Nova is the
-            solution. It's a decentralized stablecoin that leverages trustless
-            assets for liquidity: 0% of Nova's collateral is centralized.
+            DAI has long been the decentralized stablecoin of choice for DeFi
+            users. But coming soon are the risks associated with lower liquidity
+            on the DAI stablecoin due to its centralized replacement, USDS.
+            Also, it's mostly backed by USDC, a centralized stablecoin. Nova is
+            the solution. It's a decentralized stablecoin that leverages
+            trustless assets for liquidity: 0% of Nova's collateral is
+            centralized.
           </mark>
         </div>
       </footer>

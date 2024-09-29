@@ -12,7 +12,8 @@
     "ethers": "^6.13.2",
     "next": "14.2.13",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-tabs": "^6.0.2"
   },
   "devDependencies": {
     "@types/node": "^20",

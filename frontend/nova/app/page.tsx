@@ -24,7 +24,7 @@ export default function Home() {
               &nbsp; Launch app
             </span>
           </a>
-          <div class="group relative w-max">
+          <div className="group relative w-max">
             <a
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44 cursor-not-allowed"
               target="_blank"
@@ -32,7 +32,7 @@ export default function Home() {
             >
               Read our docs
             </a>
-            <span class="pointer-events-none absolute -bottom-7 left-3 w-max opacity-0 transition-opacity group-hover:opacity-100 dark:invert">
+            <span className="pointer-events-none absolute -bottom-7 left-3 w-max opacity-0 transition-opacity group-hover:opacity-100 dark:invert">
               Coming soon!
             </span>
           </div>

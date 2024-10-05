@@ -28,7 +28,7 @@ export default function App() {
   }
 
   return (
-    <div class="dark:invert backdrop-brightness-90 rounded-sm p-5 m-12">
+    <div className="dark:invert backdrop-brightness-90 rounded-sm p-5 m-12 font-[family-name:var(--font-geist-sans)]">
       <span className="flex items-center">
         <span className="text-7xl">✧</span>
         <span className="text-3xl">&nbsp;Dashboard</span>
@@ -36,7 +36,7 @@ export default function App() {
       <br />
       <br />
       <button
-        class="dark:invert backdrop-brightness-90 rounded p-1 my-1 bg-black w-48 hover:bg-inherit"
+        className="dark:invert backdrop-brightness-90 rounded p-1 my-1 bg-black w-48 hover:bg-inherit"
         onClick={connectWallet}
       >
         Connect

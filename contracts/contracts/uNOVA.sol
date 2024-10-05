@@ -20,9 +20,6 @@ contract uNOVA is ERC20 {
     }
 
     function wrap(uint256 ethAmount) public {
-        assert(weth.allowance(msg.sender, address(this)) >= ethAmount);
-        // assert(aave.allowance(msg.sender, address(this)) >= ethAmount * 10);
-        // assert(mkr.allowance(msg.sender, address(this)) >= ethAmount);
         weth.transferFrom(msg.sender, address(this), ethAmount);
         // aave.transferFrom(msg.sender, address(this), ethAmount * 10);
         // mkr.transferFrom(msg.sender, address(this), ethAmount);
@@ -30,7 +27,6 @@ contract uNOVA is ERC20 {
     }
 
     function unwrap(uint256 uNOVAAmount) public {
-        assert(balanceOf(msg.sender) >= uNOVAAmount);
         _burn(msg.sender, uNOVAAmount);
         weth.transferFrom(address(this), msg.sender, uNOVAAmount / 500);
         // aave.transferFrom(address(this), msg.sender, uNOVAAmount / 50);

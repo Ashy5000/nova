@@ -4,12 +4,13 @@ import "./tabs.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UNOVAManager from "./unova_manager";
 import { useState } from "react";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 
 export default function App() {
   const [walletReady, setWalletReady] = useState(false);
   const [signer, setSigner] = useState(null);
   const [provider, setProvider] = useState(null);
+  const [uNOVAContract, setuNOVAContract] = useState(null);
 
   async function connectWallet() {
     if (walletReady) {
@@ -21,9 +22,27 @@ export default function App() {
       );
       return;
     }
-    let providerTmp = new ethers.BrowserProvider(window.ethereum);
+    let providerTmp = new ethers.JsonRpcProvider("https://1rpc.io/sepolia");
+    let signerTmp = await new ethers.BrowserProvider(
+      window.ethereum,
+    ).getSigner();
+    fetch("uNOVAAbi.json")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (abi) {
+        const contract = new Contract(
+          "0x54fDA4D66093eA51E5Be7dfDE77511666401426c",
+          abi,
+          signerTmp,
+        );
+        console.log("Contract connection success!");
+      })
+      .catch(function (err) {
+        alert(err);
+      });
     setProvider(providerTmp);
-    setSigner(await providerTmp.getSigner());
+    setSigner(signerTmp);
     setWalletReady(true);
   }
 

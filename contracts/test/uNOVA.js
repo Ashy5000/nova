@@ -8,8 +8,17 @@ const fs = require("fs");
 describe("uNOVA", () => {
   async function deployFixture() {
     const [owner] = await ethers.getSigners();
-    const token = await ethers.deployContract("uNOVA");
+    const token = new ethers.Contract(
+      "0x54fDA4D66093eA51E5Be7dfDE77511666401426c",
+      uNOVAAbi(),
+      owner,
+    );
     return { owner, token };
+  }
+  function uNOVAAbi() {
+    const abiString = fs.readFileSync("uNOVAAbi.json");
+    const abi = JSON.parse(abiString);
+    return abi;
   }
   function erc20Abi() {
     const abiString = fs.readFileSync("erc20abi.json");

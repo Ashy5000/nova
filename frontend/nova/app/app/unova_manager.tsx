@@ -1,8 +1,21 @@
 import { useState } from "react";
 
-export default function UNOVAManager() {
+import { ethers, Contract } from "ethers";
+
+export default function UNOVAManager(props) {
   const [unstakeUnova, setUnstakeUnova] = useState(500);
   const [stakeEth, setStakeEth] = useState(1);
+
+  async function wrap() {
+    const approveTx = await props.WETH.approve(
+      "0x54fDA4D66093eA51E5Be7dfDE77511666401426c",
+      stakeEth,
+    );
+    await approveTx.wait();
+    const wrapTx = await props.uNOVA.wrap(BigInt(stakeEth));
+    await wrapTx.wait();
+  }
+
   return (
     <div className="flex justify-evenly">
       <div className="dark:invert backdrop-brightness-95 rounded-sm p-5 m-12 w-screen min-h-96">
@@ -58,7 +71,10 @@ export default function UNOVAManager() {
           &nbsp; <b>uNOVA</b>
         </div>
         <br />
-        <button className="backdrop-blur-md backdrop-brightness-90 py-1 w-64 rounded-sm">
+        <button
+          className="backdrop-blur-md backdrop-brightness-90 py-1 w-64 rounded-sm"
+          onClick={wrap}
+        >
           <mark className="bg-foreground">Wrap</mark>
         </button>
       </div>

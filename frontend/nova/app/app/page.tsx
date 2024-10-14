@@ -11,6 +11,7 @@ export default function App() {
   const [signer, setSigner] = useState(null);
   const [provider, setProvider] = useState(null);
   const [uNOVAContract, setuNOVAContract] = useState(null);
+  const [WETHContract, setWETHContract] = useState(null);
 
   async function connectWallet() {
     if (walletReady) {
@@ -36,10 +37,22 @@ export default function App() {
           abi,
           signerTmp,
         );
-        console.log("Contract connection success!");
+        setuNOVAContract(contract);
       })
       .catch(function (err) {
         alert(err);
+      });
+    fetch("erc20abi.json")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (abi) {
+        const contract = new ethers.Contract(
+          "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+          abi,
+          signerTmp,
+        );
+        setWETHContract(contract);
       });
     setProvider(providerTmp);
     setSigner(signerTmp);
@@ -70,7 +83,7 @@ export default function App() {
           </TabList>
           <TabPanel>
             <mark class="dark:invert bg-foreground">Manage your uNOVA.</mark>
-            <UNOVAManager />
+            <UNOVAManager uNOVA={uNOVAContract} WETH={WETHContract} />
           </TabPanel>
           <TabPanel>
             <mark class="dark:invert bg-foreground">Manage your stkNOVA.</mark>

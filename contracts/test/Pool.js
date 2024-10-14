@@ -8,7 +8,11 @@ const fs = require("fs");
 describe("Pool", () => {
   async function deployFixture() {
     const [owner] = await ethers.getSigners();
-    const uNOVA = await ethers.deployContract("uNOVA");
+    const uNOVA = new ethers.Contract(
+      "0x54fDA4D66093eA51E5Be7dfDE77511666401426c",
+      uNOVAAbi(),
+      owner,
+    );
     const Pool = await ethers.getContractFactory("Pool");
     const pool = await Pool.deploy(uNOVA.getAddress());
     const unovaAbiString = fs.readFileSync("erc20abi.json");
@@ -28,6 +32,11 @@ describe("Pool", () => {
       owner,
     );
     return { owner, uNOVA, pool, nova };
+  }
+  function uNOVAAbi() {
+    const abiString = fs.readFileSync("uNOVAAbi.json");
+    const abi = JSON.parse(abiString);
+    return abi;
   }
   it("should begin with a zero credit", async () => {
     const { owner, token, pool } = await loadFixture(deployFixture);

@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UNOVAManager from "./unova_manager";
 import { useState } from "react";
 import { Contract, ethers } from "ethers";
+import Statistics from "./statistics";
 
 export default function App() {
   const [walletReady, setWalletReady] = useState(false);
@@ -12,6 +13,7 @@ export default function App() {
   const [provider, setProvider] = useState(null);
   const [uNOVAContract, setuNOVAContract] = useState(null);
   const [WETHContract, setWETHContract] = useState(null);
+  const [poolContract, setPoolContract] = useState(null);
 
   async function connectWallet() {
     if (walletReady) {
@@ -54,6 +56,22 @@ export default function App() {
         );
         setWETHContract(contract);
       });
+    fetch("poolabi.json")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (abi) {
+        const contract = new ethers.Contract(
+          "0xBAe4489C0a09A60279cD25215A701F60f0A84b41",
+          abi,
+          signerTmp,
+        );
+        console.log(contract);
+        setPoolContract(contract);
+      })
+      .catch(function (err) {
+        alert(err);
+      });
     setProvider(providerTmp);
     setSigner(signerTmp);
     setWalletReady(true);
@@ -73,29 +91,38 @@ export default function App() {
       >
         Connect
       </button>
-      <br />
       {walletReady ? (
-        <Tabs>
-          <TabList>
-            <Tab>uNOVA</Tab>
-            <Tab>stkNOVA</Tab>
-            <Tab>NOVA</Tab>
-          </TabList>
-          <TabPanel>
-            <mark class="dark:invert bg-foreground">Manage your uNOVA.</mark>
-            <UNOVAManager uNOVA={uNOVAContract} WETH={WETHContract} />
-          </TabPanel>
-          <TabPanel>
-            <mark class="dark:invert bg-foreground">Manage your stkNOVA.</mark>
-          </TabPanel>
-          <TabPanel>
-            <mark class="dark:invert bg-foreground">Manage your NOVA.</mark>
-          </TabPanel>
-        </Tabs>
+        <div>
+          <br />
+          <Statistics pool={poolContract} />
+          <br />
+          <Tabs>
+            <TabList>
+              <Tab>uNOVA</Tab>
+              <Tab>stkNOVA</Tab>
+              <Tab>NOVA</Tab>
+            </TabList>
+            <TabPanel>
+              <mark class="dark:invert bg-foreground">Manage your uNOVA.</mark>
+              <UNOVAManager uNOVA={uNOVAContract} WETH={WETHContract} />
+            </TabPanel>
+            <TabPanel>
+              <mark class="dark:invert bg-foreground">
+                Manage your stkNOVA.
+              </mark>
+            </TabPanel>
+            <TabPanel>
+              <mark class="dark:invert bg-foreground">Manage your NOVA.</mark>
+            </TabPanel>
+          </Tabs>
+        </div>
       ) : (
-        <mark class="dark:invert bg-foreground">
-          Please connect your wallet.
-        </mark>
+        <div>
+          <br />
+          <mark class="dark:invert bg-foreground">
+            Please connect your wallet.
+          </mark>
+        </div>
       )}
     </div>
   );

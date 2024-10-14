@@ -13,7 +13,7 @@ export function runRipples() {
       $(document).width() / 2,
       $(document).height() / 2,
       10,
-      0.5,
+      0.05,
     );
-  }, 2000);
+  }, 4000);
 }

@@ -3,6 +3,8 @@
 import "./tabs.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import UNOVAManager from "./unova_manager";
+import StkNOVAManager from "./stknova_manager";
+import NOVAManager from "./nova_manager";
 import { useState } from "react";
 import { Contract, ethers } from "ethers";
 import Statistics from "./statistics";
@@ -14,6 +16,7 @@ export default function App() {
   const [uNOVAContract, setuNOVAContract] = useState(null);
   const [WETHContract, setWETHContract] = useState(null);
   const [poolContract, setPoolContract] = useState(null);
+  const [NOVAContract, setNOVAContract] = useState(null);
 
   async function connectWallet() {
     if (walletReady) {
@@ -66,7 +69,22 @@ export default function App() {
           abi,
           signerTmp,
         );
-        console.log(contract);
+        fetch("NOVAAbi.json")
+          .then(function (response) {
+            return response.json();
+          })
+          .then(async function (tokenAbi) {
+            console.log(tokenAbi);
+            const tokenContract = new ethers.Contract(
+              await contract.getNOVAContract(),
+              tokenAbi,
+              signerTmp,
+            );
+            setNOVAContract(tokenContract);
+          })
+          .catch(function (err) {
+            alert(err);
+          });
         setPoolContract(contract);
       })
       .catch(function (err) {
@@ -91,6 +109,9 @@ export default function App() {
       >
         Connect
       </button>
+      <br />
+      <b>IMPORTANT</b>: This interface displays 0.0000000000000000001 token as 1
+      token to enable easier trading with small amounts.
       {walletReady ? (
         <div>
           <br />
@@ -104,15 +125,29 @@ export default function App() {
             </TabList>
             <TabPanel>
               <mark class="dark:invert bg-foreground">Manage your uNOVA.</mark>
-              <UNOVAManager uNOVA={uNOVAContract} WETH={WETHContract} />
+              <UNOVAManager
+                uNOVA={uNOVAContract}
+                WETH={WETHContract}
+                user={signer}
+              />
             </TabPanel>
             <TabPanel>
               <mark class="dark:invert bg-foreground">
                 Manage your stkNOVA.
               </mark>
+              <StkNOVAManager
+                pool={poolContract}
+                uNOVA={uNOVAContract}
+                user={signer}
+              />
             </TabPanel>
             <TabPanel>
               <mark class="dark:invert bg-foreground">Manage your NOVA.</mark>
+              <NOVAManager
+                pool={poolContract}
+                uNOVA={uNOVAContract}
+                nova={NOVAContract}
+              />
             </TabPanel>
           </Tabs>
         </div>

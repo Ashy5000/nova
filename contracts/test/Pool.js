@@ -66,11 +66,12 @@ describe("Pool", () => {
   it("should correctly implement withdraws", async () => {
     const { owner, uNOVA, pool, nova } = await loadFixture(deployFixture);
     const balanceInitial = await uNOVA.balanceOf(owner);
+    const initialCredit = await pool.getAccountCredit(owner);
     await uNOVA.approve(pool, 1);
     await pool.provide(1);
     await pool.withdraw(1);
     const credit = await pool.getAccountCredit(owner);
-    expect(credit).to.not.equal(0);
+    expect(credit).to.equal(initialCredit);
     const balanceFinal = await uNOVA.balanceOf(owner);
     expect(balanceFinal).to.equal(balanceInitial);
   });

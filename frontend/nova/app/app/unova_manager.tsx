@@ -5,6 +5,7 @@ import { ethers, Contract } from "ethers";
 export default function UNOVAManager(props) {
   const [unstakeUnova, setUnstakeUnova] = useState(500);
   const [stakeEth, setStakeEth] = useState(1);
+  const [uNOVABalance, setuNOVABalance] = useState(0);
 
   async function wrap() {
     const approveTx = await props.WETH.approve(
@@ -16,6 +17,21 @@ export default function UNOVAManager(props) {
     await wrapTx.wait();
   }
 
+  async function unwrap() {
+    const unwrapTx = await props.uNOVA.unwrap(BigInt(unstakeUnova));
+    await unwrapTx.wait();
+  }
+
+  async function calculateBalance() {
+    if (uNOVABalance != 0 || props.uNOVA == null) {
+      return;
+    }
+    const balance = await props.uNOVA.balanceOf(props.user);
+    setuNOVABalance(Number(balance));
+  }
+
+  calculateBalance();
+
   return (
     <div>
       <br />
@@ -23,7 +39,7 @@ export default function UNOVAManager(props) {
         <mark className="dark:invert bg-foreground">Balance:</mark>
         <br />
         <mark className="dark:invert bg-foreground text-2xl">
-          <b>100</b>
+          <b>{uNOVABalance}</b>
         </mark>
         <br />
         <mark className="dark:invert bg-foreground">uNOVA</mark>
@@ -158,7 +174,10 @@ export default function UNOVAManager(props) {
             &nbsp; <b>MKR</b>&nbsp;&nbsp;
           </div>
           <br />
-          <button className="backdrop-blur-md backdrop-brightness-90 py-1 w-64 rounded-sm">
+          <button
+            className="backdrop-blur-md backdrop-brightness-90 py-1 w-64 rounded-sm"
+            onClick={unwrap}
+          >
             <mark className="bg-foreground">Unwrap</mark>
           </button>
         </div>
